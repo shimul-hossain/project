@@ -1,0 +1,34 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color:#F4F4F4;
+}
+.im{
+    width:100%;
+    height:200px;
+    filter:grayscale(50%);
+    transition:.2s;
+}
+.im:hover{
+    filter:grayscale(0%);
+    box-shadow: 8px 8px 10px gray;
+    /* filter:drop-shadow(8px 8px 10px gray); */
+}
+.btn1{
+    background-color: #bfdebf;
+    opacity: 1;
+}
+.btn1:hover{
+    background-color: #bfdebf;
+    opacity: .8; 
+}
+.btn2{
+    background-color:#ff7f7f94;
+    opacity: 1;
+}
+.btn2:hover{
+    background-color:#ff7f7f94;
+    opacity: .8;
+}
