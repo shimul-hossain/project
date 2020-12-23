@@ -112,7 +112,9 @@ session_start();
 <?php require_once 'menu.php' ?>
 
 <div class="container">
-
+ <?php if(isset($_GET['error']))
+  echo $_GET['error'];
+ ?>
     <div class="row ">
         <div class="col mt-3">
                      <select name="catagory"                id="catagory" class="p-2 optioncolor">  

@@ -13,6 +13,7 @@ session_start();
         $name = $_POST['uname'];
         $email = $_POST['email'];
         $pass = $_POST['pwd'];
+        $code = md5(uniqid(rand()));
         $captcha = $_POST['captcha_code'];
 
         $encpwd = password_hash($pass, PASSWORD_DEFAULT);
@@ -21,13 +22,50 @@ session_start();
 
         $count = $checkMail->rowCount();
         if($count == 0){
-            $query ="INSERT INTO logins(user_name, 	user_email, user_password) VALUES('$name', '$email', '$encpwd')";
+            $query ="INSERT INTO logins(user_name, 	user_email, user_password, token_code) VALUES('$name', '$email', '$encpwd', '$code')";
 
             if($captcha != $_SESSION['captcha_code']){
                 $msg = "Please Enter correct captcha code &#128544;";
             }
            else if($con->query($query)){
-                $msg = "Successfully Registration";
+                $id = $con->lastInsertId();
+                $id = base64_encode($id);
+                $message = "					
+						Hello $name,
+						<br /><br />
+						Welcome toCoder's builder !<br/>
+						To complete your registration  please , just click following link<br/>
+						<br /><br />
+						<a href='http://localhost/dataase/CRUD-HW/verify.php?id=$id&code=$code'>Click HERE to Activate :)</a>
+						<br /><br />
+						Thanks,";
+						
+                $subject = "Confirm Registration";
+                
+                require 'class/class.phpmailer.php';
+                $mail = new PHPMailer(true);
+                $mail->IsSMTP(); 
+                $mail->SMTPDebug  = 0;                     
+                $mail->SMTPAuth   = true;                  
+                $mail->SMTPSecure = "tls";                 
+                $mail->Host       = "smtp.gmail.com";      
+                $mail->Port       = 587;             
+                $mail->AddAddress($email);
+                $mail->Username='sbshimul000@gmail.com';  
+                $mail->Password= 'Shimul2573';            
+                $mail->SetFrom('sbshimul000@gmail.com','Coders builder');
+                $mail->AddReplyTo("sbshimul000@gmail.com","Coders builder");
+                // $mail->WordWrap = 50;
+                // $mail->IsHTML(true);
+                $mail->Subject = $subject;
+		        $mail->MsgHTML($message);
+                 
+                $mail->Send(); 
+                if($mail->Send())
+                {
+                    $success =" Please check your email to verify your account";
+                }
+              
             }
             else{
                 $msg = "error While registering";
@@ -85,8 +123,12 @@ session_start();
     <h1 class="display-5 text-center"  id="result"></h1>
         <?php if(isset($msg)){
         echo "<h1 class='text-center text-danger display-5'>$msg</h1>";
-       // header("refresh:3;signup.php"); 
-    } ?></div>
+    }
+     else if(isset($success)){
+        echo "<h1 class='text-center text-success display-5'>$success</h1>";
+    } ?>
+    
+    </div>
         <div class="row justify-content-center">
             <div class="col-6 col-md-4 bg mt-3">
                 <h1 class="display-2 heading text-center">Sign Up</h1>  <hr>

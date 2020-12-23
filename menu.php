@@ -20,7 +20,14 @@
     <?php }
     else{
       ?>
-    <a href="signin.php" class="btn btn-outline-success">SignIn</a>
+      <form action="signin.php" method="POST" class="d-flex ">
+      <input class="form-control me-2" type="text" placeholder="Enter email" name="email" required>
+      
+      <input class="form-control me-2" type="password" placeholder="Password" name="pwd" required>
+      <button class="btn btn-outline-success" type="submit" name="login" >SignIn</button>
+    </form>
+    <!-- <a href="signin.php" class="btn btn-outline-success">SignIn</a> -->
+    <a href="fpass.php" class="btn btn-outline-success mx-3">Forget password</a>
     <a href="signup.php" class="btn btn-outline-success mx-3">signUp</a>
     <?php } ?>
     </div>

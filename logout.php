@@ -3,7 +3,7 @@
   if (isset($_SESSION['mysession'])!=""){
     session_destroy();
 	unset($_SESSION['mysession']);
-	header("Location: signin.php");
+	header("Location: index.php");
   }
 
 ?>
